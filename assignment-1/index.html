@@ -4,11 +4,124 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>Bookstore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Display:ital,wght@0,400;0,500;1,400&family=Phudu:wght@700&display=swap"
+      rel="stylesheet"
+    />
     <link href="style.css" rel="stylesheet" type="text/css" />
   </head>
 
-  <body>
-    Hello world
+  <body class="light">
+    <header>
+      <nav id="menu-bar">
+        <a href="/" class="logo-text">Bookstore</a>
+        <menu>
+          <button onclick="copy()">
+            <img
+              class="fit-picture"
+              src="https://i.pravatar.cc/30"
+              alt="Grapefruit slice atop a pile of other slices"
+            /><span>John Doe</span>
+          </button>
+        </menu>
+      </nav>
+    </header>
+    <main class="main">
+      <section class="homepage book-actions">
+        <input
+          type="text"
+          name="search-books-input"
+          id="search-books-input"
+          placeholder="Search books"
+        />
+        <button type="button" class="add-book-button">Add book</button>
+      </section>
+
+      <section class="homepage book-table">
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Author</th>
+              <th>Topic</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Refactoring</td>
+              <td>Martin Fowler</td>
+              <td>Programming</td>
+              <td>Delete</td>
+            </tr>
+            <tr>
+              <td>Designing Data-Intensivce Application</td>
+              <td>Martin Kleppman</td>
+              <td>Database</td>
+              <td>Delete</td>
+            </tr>
+            <tr>
+              <td>The Phoenix Project</td>
+              <td>Gene Kim</td>
+              <td>DevOps</td>
+              <td>Delete</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <!-- delete-book-modal -->
+    <div class="delete-book-modal">
+      <button class="close-button">x</button>
+
+      <h1 class="'modal-title">Delete book</h1>
+
+      <div class="'modal-body">
+        <p>Do you want to delete <strong>Refactoring</strong> book?</p>
+      </div>
+
+      <div class="modal-footer">
+        <button class="delete-button">Delete</button>
+        <button class="cancel-button">Cancel</button>
+      </div>
+    </div>
+    <!-- END delete-book-modal -->
+
+    <!-- add-book-modal -->
+    <div class="add-book-modal">
+      <button class="close-button">x</button>
+
+      <h1 class="'modal-title">Delete book</h1>
+      <div class="'modal-body">
+        <div class="name-input">
+          <label for="book-name">Name</label>
+          <input type="text" id="book-name" />
+        </div>
+
+        <div class="author-input">
+          <label for="author-name">Author</label>
+          <input type="text" id="author-name" />
+        </div>
+
+        <div class="topic-input">
+          <label for="topic-name">Topic</label>
+          <select name="topic-name" id="topic-name">
+            <option value="programming">Programming</option>
+            <option value="author">Author</option>
+            <option value="devops">DevOps</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="create-button">Create</button>
+      </div>
+    </div>
+    <!-- END add-book-modal -->
+
     <script src="script.js"></script>
   </body>
 </html>
