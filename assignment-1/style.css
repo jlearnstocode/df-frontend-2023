@@ -3,15 +3,150 @@ html {
   width: 100%;
 }
 
-body {
+body,
+input {
   padding: 0;
   margin: 0;
+}
+
+body {
+  height: calc(100% - 116px);
+  background-color: #fff;
 
   color: #000;
   font-size: 17px;
   font-style: normal;
   font-weight: 400;
   font-family: "Noto Sans Display", "Helvetica", "Arial", sans-serif;
-
-  background-color: #fff;
 }
+
+/* button */
+button {
+  cursor: pointer;
+  border: none;
+  min-width: 90px;
+  min-height: 36px;
+  border-radius: 4px;
+  font-weight: 600;
+}
+
+button.main-button {
+  color: #fff;
+  background: rgb(256, 90, 90);
+}
+
+button.main-button:hover {
+  background: rgb(256, 30, 30);
+}
+
+button.secondary-button {
+  background: #fff;
+}
+
+button.secondary-button:hover {
+  border: 1px solid #00a86b;
+}
+
+button.link-button {
+  background: #fff;
+  text-decoration: underline;
+}
+
+/* input */
+input {
+  min-height: 34px;
+
+  border-radius: 4px;
+  border: 1px solid lightgrey;
+
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+}
+
+/* menu bar */
+header nav {
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  position: fixed;
+
+  height: 52px;
+  background-color: #fff;
+
+  padding: 0px 16px 0px 16px;
+  border-bottom: 1px solid grey;
+  box-shadow: 0px 0px 18px -3px grey;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header nav a {
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-family: Phudu, "Helvetica", "Arial", sans-serif;
+}
+
+header nav menu button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 500;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header nav menu button img {
+  border-radius: 100%;
+}
+
+header nav menu button span {
+  margin-left: 8px;
+}
+/* end menu bar */
+
+/* main body */
+main {
+  min-height: 100%;
+  margin-top: 52px;
+  padding: 32px 16px;
+  background: #eee;
+}
+
+main section {
+  padding: 12px 0px;
+}
+
+/* section book-actions */
+main section.book-actions {
+  display: flex;
+  align-items: center;
+  justify-content: end;
+}
+
+.book-actions input#search-books-input {
+  margin-right: 0.5rem;
+}
+
+/* section book-table */
+main section.book-table table {
+  width: 100%;
+  text-align: left;
+  background: lightgray;
+}
+
+main section.book-table td,
+th {
+  background: white;
+  padding: 0.5rem 0.5rem;
+}
+
+button.link-button.delete-button {
+  color: red;
+
+  min-width: fit-content;
+  min-height: fit-content;
+}
+/* end main body */

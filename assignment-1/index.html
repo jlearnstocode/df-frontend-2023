@@ -18,7 +18,7 @@
       <nav id="menu-bar">
         <a href="/" class="logo-text">Bookstore</a>
         <menu>
-          <button onclick="copy()">
+          <button id="menu-button">
             <img
               class="fit-picture"
               src="https://i.pravatar.cc/30"
@@ -36,7 +36,9 @@
           id="search-books-input"
           placeholder="Search books"
         />
-        <button type="button" class="add-book-button">Add book</button>
+        <button type="button" class="main-button add-book-button">
+          Add book
+        </button>
       </section>
 
       <section class="homepage book-table">
@@ -49,24 +51,31 @@
               <th>Action</th>
             </tr>
           </thead>
+
           <tbody>
             <tr>
               <td>Refactoring</td>
               <td>Martin Fowler</td>
               <td>Programming</td>
-              <td>Delete</td>
+              <td>
+                <button class="link-button delete-button">Delete</button>
+              </td>
             </tr>
             <tr>
               <td>Designing Data-Intensivce Application</td>
               <td>Martin Kleppman</td>
               <td>Database</td>
-              <td>Delete</td>
+              <td>
+                <button class="link-button delete-button">Delete</button>
+              </td>
             </tr>
             <tr>
               <td>The Phoenix Project</td>
               <td>Gene Kim</td>
               <td>DevOps</td>
-              <td>Delete</td>
+              <td>
+                <button class="link-button delete-button">Delete</button>
+              </td>
             </tr>
           </tbody>
         </table>
@@ -74,7 +83,7 @@
     </main>
 
     <!-- delete-book-modal -->
-    <div class="delete-book-modal">
+    <!-- <div class="delete-book-modal">
       <button class="close-button">x</button>
 
       <h1 class="'modal-title">Delete book</h1>
@@ -87,11 +96,11 @@
         <button class="delete-button">Delete</button>
         <button class="cancel-button">Cancel</button>
       </div>
-    </div>
+    </div> -->
     <!-- END delete-book-modal -->
 
     <!-- add-book-modal -->
-    <div class="add-book-modal">
+    <!-- <div class="add-book-modal">
       <button class="close-button">x</button>
 
       <h1 class="'modal-title">Delete book</h1>
@@ -119,7 +128,7 @@
       <div class="modal-footer">
         <button class="create-button">Create</button>
       </div>
-    </div>
+    </div> -->
     <!-- END add-book-modal -->
 
     <script src="script.js"></script>
