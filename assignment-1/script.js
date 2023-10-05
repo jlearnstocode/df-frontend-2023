@@ -1,4 +1,4 @@
-const bookData = [
+let bookData = [
   {
     name: "Refactoring",
     author: "Martin Fowler",
@@ -18,13 +18,11 @@ const bookData = [
 
 let selectedBookId;
 
-function renderBookTable() {
-  const availableBook = bookData.filter((i) => !i.isDeleted);
-
+function renderBookTable(data) {
   const bookTable = document.querySelector("tbody");
   const newBookTable = document.createElement("tbody");
 
-  if (availableBook.length === 0) {
+  if (data.length === 0) {
     const tdEmpty = document.createElement("td");
     tdEmpty.textContent = "No book here! 🙈";
     tdEmpty.className = "empty-list";
@@ -35,7 +33,7 @@ function renderBookTable() {
 
     newBookTable.appendChild(tr);
   } else {
-    availableBook.map((book, idx) => {
+    data.map((book, idx) => {
       const tdName = document.createElement("td");
       tdName.textContent = book.name;
 
@@ -70,7 +68,7 @@ function handleConfirmDelete() {
   bookData.splice(selectedBookId, 1);
 
   document.getElementById("delete-book-modal").remove();
-  renderBookTable();
+  renderBookTable(bookData);
 }
 
 function renderDeleteModal(target) {
@@ -114,7 +112,7 @@ function handleConfirmAdd() {
   bookData.push(newBook);
 
   document.getElementById("add-book-modal").remove();
-  renderBookTable();
+  renderBookTable(bookData);
 }
 
 function renderAddModal() {
@@ -165,7 +163,7 @@ function renderAddModal() {
   document.body.appendChild(addModal);
 }
 
-renderBookTable();
+renderBookTable(bookData);
 
 const body = document.querySelector("body");
 
@@ -203,4 +201,16 @@ body.addEventListener("click", (event) => {
   ) {
     document.getElementById("add-book-modal").remove();
   }
+});
+
+const searchBox = document.getElementById("search-books-input");
+
+searchBox.addEventListener("change", (event) => {
+  const text = event.target.value.toLowerCase();
+
+  if (!text) {
+    renderBookTable(bookData);
+  }
+  const data = bookData.filter((i) => i.name.toLowerCase().includes(text));
+  renderBookTable(data);
 });
