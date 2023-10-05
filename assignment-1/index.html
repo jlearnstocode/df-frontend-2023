@@ -34,6 +34,7 @@
           type="text"
           name="search-books-input"
           id="search-books-input"
+          class="search-books-input"
           placeholder="Search books"
         />
         <button type="button" class="main-button add-book-button">
@@ -52,81 +53,66 @@
             </tr>
           </thead>
 
-          <tbody>
-            <tr>
-              <td>Refactoring</td>
-              <td>Martin Fowler</td>
-              <td>Programming</td>
-              <td>
-                <button class="link-button delete-button">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>Designing Data-Intensivce Application</td>
-              <td>Martin Kleppman</td>
-              <td>Database</td>
-              <td>
-                <button class="link-button delete-button">Delete</button>
-              </td>
-            </tr>
-            <tr>
-              <td>The Phoenix Project</td>
-              <td>Gene Kim</td>
-              <td>DevOps</td>
-              <td>
-                <button class="link-button delete-button">Delete</button>
-              </td>
-            </tr>
-          </tbody>
+          <tbody></tbody>
         </table>
       </section>
     </main>
 
     <!-- delete-book-modal -->
-    <!-- <div class="delete-book-modal">
-      <button class="close-button">x</button>
+    <!-- <div id="delete-book-modal" class="delete-book-modal">
+      <div class="modal-content">
+        <button class="close-button">&times;</button>
 
-      <h1 class="'modal-title">Delete book</h1>
+        <div class="modal-header">
+          <h1 class="'modal-title">Delete book</h1>
+        </div>
 
-      <div class="'modal-body">
-        <p>Do you want to delete <strong>Refactoring</strong> book?</p>
-      </div>
+        <div class="modal-body">
+          <p>Do you want to delete <strong>Refactoring</strong> book?</p>
+        </div>
 
-      <div class="modal-footer">
-        <button class="delete-button">Delete</button>
-        <button class="cancel-button">Cancel</button>
+        <div class="modal-footer">
+          <button class="delete-book-modal__confirm secondary-button">
+            Delete
+          </button>
+          <button class="cancel-button main-button">Cancel</button>
+        </div>
       </div>
     </div> -->
     <!-- END delete-book-modal -->
 
     <!-- add-book-modal -->
-    <!-- <div class="add-book-modal">
-      <button class="close-button">x</button>
+    <!-- <div id="add-book-modal" class="add-book-modal">
+      <div class="modal-content">
+        <button class="close-button">&times;</button>
 
-      <h1 class="'modal-title">Delete book</h1>
-      <div class="'modal-body">
-        <div class="name-input">
-          <label for="book-name">Name</label>
-          <input type="text" id="book-name" />
+        <div class="modal-header">
+          <h1 class="'modal-title">Add book</h1>
+        </div>
+        <div class="'modal-body">
+          <div class="name-input">
+            <label for="book-name">Name</label>
+            <input type="text" id="book-name" />
+          </div>
+
+          <div class="author-input">
+            <label for="author-name">Author</label>
+            <input type="text" id="author-name" />
+          </div>
+
+          <div class="topic-input">
+            <label for="topic-name">Topic</label>
+            <select name="topic-name" id="topic-name">
+              <option value="programming">Programming</option>
+              <option value="author">Author</option>
+              <option value="devops">DevOps</option>
+            </select>
+          </div>
         </div>
 
-        <div class="author-input">
-          <label for="author-name">Author</label>
-          <input type="text" id="author-name" />
+        <div class="modal-footer">
+          <button class="create-button">Create</button>
         </div>
-
-        <div class="topic-input">
-          <label for="topic-name">Topic</label>
-          <select name="topic-name" id="topic-name">
-            <option value="programming">Programming</option>
-            <option value="author">Author</option>
-            <option value="devops">DevOps</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="modal-footer">
-        <button class="create-button">Create</button>
       </div>
     </div> -->
     <!-- END add-book-modal -->
