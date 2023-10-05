@@ -74,7 +74,7 @@ button.close-button:hover {
   color: red;
 }
 /* input */
-input {
+input, select {
   min-height: 34px;
 
   border-radius: 4px;
@@ -223,7 +223,7 @@ button.link-button.delete-book-modal__open {
   padding: 16px;
 }
 
-.modal-body p {
+.modal-content .modal-body p {
   text-align: center;
   margin: 0 auto;
   max-width: 216px;
@@ -234,6 +234,16 @@ button.link-button.delete-book-modal__open {
   padding: 16px;
   display: flex;
   justify-content: space-evenly;
+}
+
+.add-book-modal div.input {
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+}
+
+.add-book-modal div.input label {
+  padding: 8px 0px;
 }
 
 /* Add Animation */

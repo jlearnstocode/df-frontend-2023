@@ -3,21 +3,20 @@ const bookData = [
     name: "Refactoring",
     author: "Martin Fowler",
     topic: "Code refactoring",
-    isDeleted: false,
   },
   {
     name: "Designing Data-Intensivce Application",
     author: "Martin Kleppman",
     topic: "Database",
-    isDeleted: false,
   },
   {
     name: "The Phoenix Project",
     author: "Gene Kim",
     topic: "DevOps",
-    isDeleted: false,
   },
 ];
+
+let selectedBookId;
 
 function renderBookTable() {
   const availableBook = bookData.filter((i) => !i.isDeleted);
@@ -74,8 +73,6 @@ function handleConfirmDelete() {
   renderBookTable();
 }
 
-let selectedBookId;
-
 function renderDeleteModal(target) {
   selectedBookId = target.getAttribute("data-index");
   const selectedBook = bookData[selectedBookId];
@@ -88,7 +85,7 @@ function renderDeleteModal(target) {
 
   deleteModal.innerHTML = `
     <div class="modal-content">
-      <button class="close-button">&times;</button>
+      <button class="close-button delete-book-modal__close">&times;</button>
 
       <div class="modal-header">
         <h1 class="'modal-title">Delete book</h1>
@@ -100,7 +97,7 @@ function renderDeleteModal(target) {
 
       <div class="modal-footer">
         <button class="delete-book-modal__confirm secondary-button">Delete</button>
-        <button class="cancel-button main-button">Cancel</button>
+        <button class="delete-book-modal__cancel main-button">Cancel</button>
       </div>
     </div>
   `;
@@ -108,11 +105,72 @@ function renderDeleteModal(target) {
   document.body.appendChild(deleteModal);
 }
 
+function handleConfirmAdd() {
+  const name = document.getElementById("book-name").value;
+  const author = document.getElementById("author-name").value;
+  const topic = document.getElementById("topic-name").value;
+
+  const newBook = { name, author, topic };
+  bookData.push(newBook);
+
+  document.getElementById("add-book-modal").remove();
+  renderBookTable();
+}
+
+function renderAddModal() {
+  const addModal = document.createElement("div");
+
+  addModal.className = "add-book-modal";
+  addModal.setAttribute("id", "add-book-modal");
+  addModal.style.display = "flex";
+
+  addModal.innerHTML = `
+    <div class="modal-content">
+      <button class="close-button add-book-modal__close">&times;</button>
+
+      <div class="modal-header">
+        <h1 class="'modal-title">Add book</h1>
+      </div>
+
+      <form>
+        <div class="'modal-body">
+          <div class="input name-input">
+            <label for="book-name">Name</label>
+            <input type="text" id="book-name" placeholder='book name...'/>
+          </div>
+
+          <div class="input author-input">
+            <label for="author-name">Author</label>
+            <input type="text" id="author-name" placeholder='book author...'/>
+          </div>
+
+          <div class="input topic-input">
+            <label for="topic-name">Topic</label>
+            <select name="topic-name" id="topic-name">
+              <option value="Code refactoring">Code refactoring</option>
+              <option value="Database">Database</option>
+              <option value="DevOps">DevOps</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button class="add-book-modal__confirm main-button">Create</button>
+        </div>
+      </form>
+
+    </div>
+  `;
+
+  document.body.appendChild(addModal);
+}
+
 renderBookTable();
 
 const body = document.querySelector("body");
 
-body.addEventListener("click", ({ target }) => {
+body.addEventListener("click", (event) => {
+  const { target } = event;
   const classList = target.classList;
 
   if (classList?.contains("delete-book-modal__open")) {
@@ -123,11 +181,26 @@ body.addEventListener("click", ({ target }) => {
     handleConfirmDelete(target);
   }
 
+  if (classList?.contains("add-book-modal__open")) {
+    renderAddModal();
+  }
+
+  if (classList?.contains("add-book-modal__confirm")) {
+    event.preventDefault();
+    handleConfirmAdd(target);
+  }
+
   if (
     classList?.contains("delete-book-modal") ||
-    classList?.contains("cancel-button") ||
-    classList?.contains("close-button")
+    classList?.contains("delete-book-modal__cancel") ||
+    classList?.contains("delete-book-modal__close")
   ) {
     document.getElementById("delete-book-modal").remove();
+  }
+  if (
+    classList?.contains("add-book-modal") ||
+    classList?.contains("add-book-modal__close")
+  ) {
+    document.getElementById("add-book-modal").remove();
   }
 });
