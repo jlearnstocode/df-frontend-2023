@@ -263,3 +263,25 @@ button.link-button.delete-book-modal__open {
   }
 }
 /* end delete book modal */
+/* pagination */
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0px;
+}
+
+.pagination-item {
+  cursor: pointer;
+  border: 1px solid black;
+  width: 30px;
+  height: 30px;
+  margin: 20px 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination-item.active {
+  background: lightblue;
+}
+/* end pagination */

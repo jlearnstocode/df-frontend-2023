@@ -2,6 +2,9 @@ import React, { useMemo, useState } from "react";
 import { useBookState } from "../context/BookContext";
 import Button from "./Button";
 import { DeleteBookModal } from "./DeleteBookModal";
+import Pagination from "./Pagination";
+
+const ITEM_PER_PAGE = 5;
 
 function BookTable() {
   const { bookData } = useBookState();
@@ -12,6 +15,18 @@ function BookTable() {
   const selectedBook = useMemo(
     () => bookData?.find((b) => b.id === selectedBookId),
     [bookData, selectedBookId]
+  );
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPage = Math.ceil(bookData?.length / ITEM_PER_PAGE);
+
+  const bookDataWithPage = useMemo(
+    () =>
+      bookData.slice(
+        (currentPage - 1) * ITEM_PER_PAGE,
+        currentPage * ITEM_PER_PAGE
+      ),
+    [bookData, currentPage]
   );
 
   return (
@@ -33,14 +48,14 @@ function BookTable() {
         </thead>
 
         <tbody>
-          {bookData?.length === 0 ? (
+          {bookDataWithPage?.length === 0 ? (
             <tr>
               <td className="empty-list" colspan="100%">
                 No book here! 🙈
               </td>
             </tr>
           ) : (
-            bookData?.map((book, idx) => {
+            bookDataWithPage?.map((book, idx) => {
               return (
                 <tr key={idx}>
                   <td>{book?.name}</td>
@@ -62,6 +77,12 @@ function BookTable() {
           )}
         </tbody>
       </table>
+
+      <Pagination
+        totalPage={totalPage}
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+      />
     </>
   );
 }

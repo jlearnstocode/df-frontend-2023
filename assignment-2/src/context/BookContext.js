@@ -1,25 +1,6 @@
 import { createContext, useContext, useReducer } from "react";
+import bookData from "./bookData";
 
-let bookData = [
-  {
-    id: 1,
-    name: "Refactoring",
-    author: "Martin Fowler",
-    topic: "Code refactoring",
-  },
-  {
-    id: 2,
-    name: "Designing Data-Intensivce Application",
-    author: "Martin Kleppman",
-    topic: "Database",
-  },
-  {
-    id: 3,
-    name: "The Phoenix Project",
-    author: "Gene Kim",
-    topic: "DevOps",
-  },
-];
 const BookContext = createContext();
 
 const initialState = { bookData };
@@ -31,8 +12,6 @@ const actions = {
 };
 
 function bookReducer(state, action) {
-
-
   switch (action.type) {
     case actions.ADD_BOOK:
       state = { ...state, bookData: [...state.bookData, action.payload] };
