@@ -1,30 +1,30 @@
 import { createContext, useContext, useReducer } from 'react';
 import bookData from './bookData';
+import { BookInitialStateType, BookType } from '../@types/book';
 
-const BookContext = createContext();
+const BookContext = createContext({} as BookInitialStateType);
 
-const initialState = { bookData };
+const initialState: { bookData: BookType[] } = { bookData };
 
-const actions = {
-  ADD_BOOK: 'ADD_BOOK',
-  SEARCH_BOOK: 'SEARCH_BOOK',
-  DELETE_BOOK: 'DELETE_BOOK',
-};
+type ACTIONTYPE =
+  | { type: 'ADD_BOOK'; payload: BookType }
+  | { type: 'SEARCH_BOOK'; payload: string }
+  | { type: 'DELETE_BOOK'; payload: number };
 
-function bookReducer(state, action) {
+function bookReducer(state: typeof initialState, action: ACTIONTYPE) {
   switch (action.type) {
-    case actions.ADD_BOOK:
+    case 'ADD_BOOK':
       state = { ...state, bookData: [...state.bookData, action.payload] };
       break;
 
-    case actions.DELETE_BOOK: {
+    case 'DELETE_BOOK': {
       const id = action.payload;
       const newData = state.bookData?.filter((b) => b.id !== id);
       state = { ...state, bookData: newData };
       break;
     }
 
-    case actions.SEARCH_BOOK: {
+    case 'SEARCH_BOOK': {
       const text = action.payload?.toLowerCase();
       const result = state.bookData?.filter((b) =>
         b.name.toLowerCase().includes(text),
@@ -47,22 +47,20 @@ function bookReducer(state, action) {
 function BookProvider({ children }) {
   const [state, dispatch] = useReducer(bookReducer, initialState);
 
-  function addBook(book) {
-    dispatch({ type: actions.ADD_BOOK, payload: book });
+  function addBook(book: BookType) {
+    dispatch({ type: 'ADD_BOOK', payload: book });
   }
 
-  function deleteBook(id) {
-    dispatch({ type: actions.DELETE_BOOK, payload: id });
+  function deleteBook(id: number) {
+    dispatch({ type: 'DELETE_BOOK', payload: id });
   }
 
-  function searchBook(text) {
-    dispatch({ type: actions.SEARCH_BOOK, payload: text });
+  function searchBook(text: string) {
+    dispatch({ type: 'SEARCH_BOOK', payload: text });
   }
 
   return (
-    <BookContext.Provider
-      value={{ state, dispatch, addBook, deleteBook, searchBook }}
-    >
+    <BookContext.Provider value={{ state, addBook, deleteBook, searchBook }}>
       {children}
     </BookContext.Provider>
   );

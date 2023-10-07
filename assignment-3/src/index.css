@@ -258,7 +258,7 @@ button.link-button.delete-book-modal__open {
   justify-content: space-evenly;
 }
 
-.modal-content div.input {
+.modal-content div.input label {
   display: flex;
   flex-direction: column;
   padding: 8px;

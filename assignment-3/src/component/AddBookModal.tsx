@@ -3,10 +3,12 @@ import ModalWrapper from './ModalWrapper';
 import { useBook } from '../context/BookContext';
 import { ModalFooter } from './ModalFooter';
 import { AddBookForm } from './AddBookForm';
+import { BookType } from '../@types/book';
 
 export function AddBookModal({ isShowModal, setIsShowModal }) {
   const { addBook } = useBook();
-  const [newBook, setNewBook] = useState({
+  const [newBook, setNewBook] = useState<BookType>({
+    id: 0,
     name: '',
     author: '',
     topic: 'Code refactoring',
@@ -26,11 +28,10 @@ export function AddBookModal({ isShowModal, setIsShowModal }) {
       isShowModal={isShowModal}
       setIsShowModal={setIsShowModal}
     >
-      <AddBookForm newBook={newBook} setNewBook={setNewBook} />
+      <AddBookForm setNewBook={setNewBook} />
 
       <ModalFooter
         actionText="Add"
-        newBook={newBook}
         handleSubmit={() => handleAddBook()}
         setIsShowModal={setIsShowModal}
       />

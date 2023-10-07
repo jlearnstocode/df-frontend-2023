@@ -13,10 +13,8 @@ export function DeleteBookModal({ isShowModal, setIsShowModal, selectedBook }) {
       setIsShowModal={setIsShowModal}
     >
       <p>
-        Do you want to delete 
-        {' '}
+        Do you want to delete
         <strong>{selectedBook?.name}</strong>
-        {' '}
         book?
       </p>
       <ModalFooter

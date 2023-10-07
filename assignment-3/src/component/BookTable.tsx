@@ -10,7 +10,7 @@ function BookTable() {
   const { bookData } = useBookState();
 
   const [isShowModal, setIsShowModal] = useState(false);
-  const [selectedBookId, setSetselectedBookId] = useState(null);
+  const [selectedBookId, setSetselectedBookId] = useState<number | null>(null);
 
   const selectedBook = useMemo(
     () => bookData?.find((b) => b.id === selectedBookId),
@@ -50,7 +50,7 @@ function BookTable() {
         <tbody>
           {bookDataWithPage?.length === 0 ? (
             <tr>
-              <td className="empty-list" colSpan="100%">
+              <td className="empty-list" colSpan={100}>
                 No book here! 🙈
               </td>
             </tr>
