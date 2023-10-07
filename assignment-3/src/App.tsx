@@ -1,29 +1,29 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from 'react';
+import Layout from './component/Layout';
+import Button from './component/Button';
+import SearchBox from './component/SearchBox';
+import BookTable from './component/BookTable';
+import { AddBookModal } from './component/AddBookModal';
 
-function App() {
+export default function App() {
+  const [isShowModal, setIsShowModal] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit 
-          {' '}
-          <code>src/App.js</code>
-          {' '}
-          and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Layout>
+      <section className="homepage book-actions">
+        <SearchBox />
+        <Button
+          text="Add book"
+          variant="main-button"
+          onClick={() => setIsShowModal(true)}
+        />
+      </section>
+
+      <section className="homepage book-table">
+        <BookTable />
+      </section>
+
+      <AddBookModal isShowModal={isShowModal} setIsShowModal={setIsShowModal} />
+    </Layout>
   );
 }
-
-export default App;
