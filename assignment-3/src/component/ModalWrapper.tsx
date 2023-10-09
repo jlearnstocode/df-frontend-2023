@@ -17,7 +17,7 @@ function Modal({ mode, isShowModal, setIsShowModal, children }) {
         <CloseButton setIsShowModal={setIsShowModal} />
 
         <div className="modal-header">
-          <h1 className="'modal-title">{text} book</h1>
+          <h1 className="'modal-title">`${text} book`</h1>
         </div>
 
         <div className="modal-body">{children}</div>

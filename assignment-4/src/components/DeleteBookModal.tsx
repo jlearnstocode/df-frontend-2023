@@ -8,12 +8,14 @@ interface DeleteBookModalProp {
   isShowModal: boolean;
   setIsShowModal: (b: boolean) => void;
   selectedBook: BookType | undefined;
+  callbackFn?: () => void;
 }
 
 export function DeleteBookModal({
   isShowModal,
   setIsShowModal,
   selectedBook,
+  callbackFn,
 }: DeleteBookModalProp) {
   const { deleteBook } = useBook();
 
@@ -35,6 +37,7 @@ export function DeleteBookModal({
           if (!selectedBook?.id) return;
           deleteBook(selectedBook?.id);
           setIsShowModal(false);
+          if (callbackFn) callbackFn();
         }}
         setIsShowModal={setIsShowModal}
       />

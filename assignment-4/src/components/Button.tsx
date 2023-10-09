@@ -9,7 +9,7 @@ export default function Button({ variant, text, ...rest }: ButtonProps) {
   let style = variant;
 
   if (variant === 'link-button') {
-    style = clsx('bg-white underline text-red-500 hover:bg-gray-200');
+    style = clsx('bg-white underline text-red-500 hover:bg-gray-200 w-16');
   }
 
   if (variant === 'main-button') {

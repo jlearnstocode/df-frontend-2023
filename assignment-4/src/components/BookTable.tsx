@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useBookState } from '../context/BookContext';
 import Button from './Button';
 import { DeleteBookModal } from './DeleteBookModal';
@@ -8,6 +9,7 @@ const ITEM_PER_PAGE = 5;
 
 function BookTable() {
   const { bookData } = useBookState();
+  const router = useRouter();
 
   const [isShowModal, setIsShowModal] = useState(false);
   const [selectedBookId, setSetselectedBookId] = useState<number | null>(null);
@@ -68,6 +70,15 @@ function BookTable() {
                       onClick={() => {
                         setSetselectedBookId(book.id);
                         setIsShowModal(true);
+                      }}
+                    />
+                    |
+                    <Button
+                      text="View"
+                      variant="link-button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        router.push(`/book/${book.id}`);
                       }}
                     />
                   </td>
