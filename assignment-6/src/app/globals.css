@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+html {
+  @apply h-full w-full;
+}
+
+body,
+input {
+  @apply m-0 p-0;
+}
+
+/* button */
+button {
+  @apply cursor-pointer font-semibold;
+  @apply border-none rounded;
+  @apply w-32 h-8;
+}
+
+button.close-button {
+  @apply absolute top-1 right-2 bg-transparent;
+  @apply text-gray-500 text-2xl;
+  @apply w-6 h-6;
+}
+
+input,
+select {
+  @apply h-8 px-2;
+  @apply border border-solid border-gray-300 rounded;
+}
+
+header nav {
+  @apply fixed top-0 left-0 right-0;
+  @apply flex items-center justify-between;
+  @apply h-14 bg-white px-4 border-b border-gray-300 shadow-lg;
+}
+
+.is-show-modal {
+  display: flex !important;
+}
