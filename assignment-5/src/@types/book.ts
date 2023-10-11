@@ -10,4 +10,5 @@ export interface BookInitialStateType {
   searchBook: (text: string) => void;
   deleteBook: (id: number) => void;
   addBook: (book: BookType) => void;
+  editBook: (book: BookType) => void;
 }

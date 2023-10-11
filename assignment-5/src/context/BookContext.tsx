@@ -10,6 +10,7 @@ const initialState: { bookData: BookType[] } = { bookData };
 
 type ACTIONTYPE =
   | { type: 'ADD_BOOK'; payload: BookType }
+  | { type: 'EDIT_BOOK'; payload: BookType }
   | { type: 'SEARCH_BOOK'; payload: string }
   | { type: 'DELETE_BOOK'; payload: number };
 
@@ -18,6 +19,18 @@ function bookReducer(state: typeof initialState, action: ACTIONTYPE) {
     case 'ADD_BOOK':
       state = { ...state, bookData: [...state.bookData, action.payload] };
       break;
+
+    case 'EDIT_BOOK': {
+      const { id } = action.payload;
+      const newData = state.bookData?.map((b) => {
+        if (b.id !== id) return b;
+
+        return action.payload;
+      });
+
+      state = { ...state, bookData: newData };
+      break;
+    }
 
     case 'DELETE_BOOK': {
       const id = action.payload;
@@ -54,6 +67,10 @@ function BookProvider({ children }: { children: React.ReactNode }) {
       dispatch({ type: 'ADD_BOOK', payload: book });
     }
 
+    function editBook(book: BookType) {
+      dispatch({ type: 'EDIT_BOOK', payload: book });
+    }
+
     function deleteBook(id: number) {
       dispatch({ type: 'DELETE_BOOK', payload: id });
     }
@@ -65,6 +82,7 @@ function BookProvider({ children }: { children: React.ReactNode }) {
     return {
       state,
       addBook,
+      editBook,
       deleteBook,
       searchBook,
     };

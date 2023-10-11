@@ -4,6 +4,7 @@ import { useBookState } from '../context/BookContext';
 import Button from './Button';
 import { DeleteBookModal } from './DeleteBookModal';
 import Pagination from './Pagination';
+import { BookModal } from './BookModal';
 
 const ITEM_PER_PAGE = 5;
 
@@ -31,6 +32,9 @@ function BookTable() {
     [bookData, currentPage],
   );
 
+  // Edit book
+  const [isShowBookModal, setIsShowBookModal] = useState(false);
+
   return (
     <>
       <DeleteBookModal
@@ -38,7 +42,12 @@ function BookTable() {
         setIsShowModal={setIsShowModal}
         selectedBook={selectedBook}
       />
-
+      <BookModal
+        selectedBook={selectedBook}
+        mode="EDIT_BOOK"
+        isShowBookModal={isShowBookModal}
+        setIsShowBookModal={setIsShowBookModal}
+      />
       <table className="w-full text-left">
         <thead>
           <tr>
@@ -64,6 +73,15 @@ function BookTable() {
                   <td className="bg-white p-2">{book?.author}</td>
                   <td className="bg-white p-2">{book?.topic}</td>
                   <td className="bg-white p-2">
+                    <Button
+                      text="Edit"
+                      variant="link-button"
+                      onClick={() => {
+                        setSetselectedBookId(book.id);
+                        setIsShowBookModal(true);
+                      }}
+                    />
+                    |
                     <Button
                       text="Delete"
                       variant="link-button"

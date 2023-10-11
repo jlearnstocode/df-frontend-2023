@@ -21,7 +21,7 @@ export function DeleteBookModal({
 
   return (
     <ModalWrapper
-      mode="DELETE"
+      mode="DELETE_BOOK"
       isShowModal={isShowModal}
       setIsShowModal={setIsShowModal}
     >
@@ -34,6 +34,7 @@ export function DeleteBookModal({
       <ModalFooter
         actionText="Delete"
         handleSubmit={() => {
+          alert(JSON.stringify(selectedBook));
           if (!selectedBook?.id) return;
           deleteBook(selectedBook?.id);
           setIsShowModal(false);

@@ -33,8 +33,9 @@ button {
 }
 
 button.close-button {
-  @apply absolute top-1 -right-6 bg-transparent;
+  @apply absolute top-1 right-2 bg-transparent;
   @apply text-gray-500 text-2xl;
+  @apply w-6 h-6;
 }
 
 input,

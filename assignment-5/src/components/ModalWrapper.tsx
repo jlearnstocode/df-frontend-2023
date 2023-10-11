@@ -21,15 +21,17 @@ function ModalWrapper({
 
   let text = '';
 
-  if (mode === 'DELETE') {
+  if (mode === 'DELETE_BOOK') {
     text = 'Delete';
-  } else if (mode === 'ADD') {
+  } else if (mode === 'ADD_BOOK') {
     text = 'Add';
+  } else if (mode === 'EDIT_BOOK') {
+    text = 'Edit';
   }
 
   return (
-    <div id="delete-book-modal" className={style}>
-      <div className="bg-white border border-gray-300 p-3 m-auto max-h-96 max-w-xs relative shadow-md">
+    <div id="book-modal" className={style}>
+      <div className="bg-white border border-gray-300 p-3 m-auto max-h-[550px] max-w-md relative shadow-md">
         <CloseButton setIsShowModal={setIsShowModal} />
 
         <div className="flex justify-center text-xl font-bold p-2">

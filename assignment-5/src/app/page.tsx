@@ -4,10 +4,10 @@ import React, { useState } from 'react';
 import SearchBox from '../components/SearchBox';
 import Button from '../components/Button';
 import BookTable from '../components/BookTable';
-import { AddBookModal } from '../components/AddBookModal';
+import { BookModal } from '../components/BookModal';
 
 export default function Home() {
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowBookModal, setIsShowBookModal] = useState(false);
 
   return (
     <>
@@ -16,7 +16,7 @@ export default function Home() {
         <Button
           text="Add book"
           variant="main-button"
-          onClick={() => setIsShowModal(true)}
+          onClick={() => setIsShowBookModal(true)}
         />
       </section>
 
@@ -24,7 +24,11 @@ export default function Home() {
         <BookTable />
       </section>
 
-      <AddBookModal isShowModal={isShowModal} setIsShowModal={setIsShowModal} />
+      <BookModal
+        mode="ADD_BOOK"
+        isShowBookModal={isShowBookModal}
+        setIsShowBookModal={setIsShowBookModal}
+      />
     </>
   );
 }
