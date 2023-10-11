@@ -17,11 +17,6 @@ export function BookModal({
   isShowBookModal: boolean;
   setIsShowBookModal: (v: boolean) => void;
 }) {
-
-
-
-
-
   return (
     <ModalWrapper
       mode={mode}
@@ -30,12 +25,9 @@ export function BookModal({
     >
       <BookForm
         mode={mode}
-
         selectedBook={selectedBook}
         setIsShowModal={setIsShowBookModal}
       />
-
-      
     </ModalWrapper>
   );
 }
