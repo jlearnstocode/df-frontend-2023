@@ -1,6 +1,8 @@
 export interface UserType {
+  avatar: string;
   email: string;
-  name: string;
+  fullName: string;
+  id: number;
 }
 
 export interface AuthInfoType {
@@ -42,6 +44,16 @@ export type SignupResponse = {
     message: string;
   };
 };
+
+export type GetmeResponse = {
+  data: {
+    avatar: string;
+    email: string;
+    fullName: string;
+    id: number;
+  };
+};
+
 export type SignupResponseBadRequest = {
   code: 'string';
   error: 'string';

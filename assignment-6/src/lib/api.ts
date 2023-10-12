@@ -1,5 +1,6 @@
 import {
   BaseListResponse,
+  GetmeResponse,
   LoginRequest,
   LoginResponse,
   SignupRequest,
@@ -18,7 +19,7 @@ const privateHeaders: HeadersInit = {
   ...headers,
   Authorization:
     typeof window !== 'undefined'
-      ? `Bearer ${window.localStorage.getItem('df-token')}`
+      ? `Bearer ${window.localStorage.getItem('my-token')}`
       : '',
 };
 
@@ -34,6 +35,12 @@ const client = {
     return fetcher<LoginResponse>(`${BASE_URL}/api/v1/auth/login`, {
       method: 'POST',
       body: JSON.stringify(params),
+    });
+  },
+
+  getMe() {
+    return fetcher<GetmeResponse>(`${BASE_URL}/api/v1/me`, {
+      headers: privateHeaders,
     });
   },
 

@@ -16,6 +16,10 @@ export default function Button({ variant, text, ...rest }: ButtonProps) {
     style = 'bg-red-400 hover:bg-red-300';
   }
 
+  if (variant === 'logout-button') {
+    style = 'bg-red-400 hover:bg-red-300 w-20';
+  }
+
   return (
     <button type="button" className={style} {...rest}>
       {text}

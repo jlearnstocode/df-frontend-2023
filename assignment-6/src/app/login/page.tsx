@@ -3,6 +3,10 @@
 import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { LoginRequest } from '../../@types/auth';
+import { useAuth } from '../../context/AuthContext';
+import { ThreeCircles } from 'react-loader-spinner';
 
 const LoginSchema = z.object({
   email: z.string().email('Email is not valid!'),
@@ -12,17 +16,33 @@ const LoginSchema = z.object({
 type LoginSchemaType = z.infer<typeof LoginSchema>;
 
 export default function LoginForm() {
+  const { login, getme } = useAuth();
+  const router = useRouter();
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<LoginSchemaType>({
     defaultValues: { email: '', password: '' },
     resolver: zodResolver(LoginSchema),
   });
 
-  const onSubmit: SubmitHandler<LoginSchemaType> = (data) => {
-    alert(JSON.stringify(data));
+  const onSubmit: SubmitHandler<LoginSchemaType> = async (
+    data: LoginRequest,
+  ) => {
+    const info = {
+      email: data.email,
+      password: data.password,
+    };
+
+    try {
+      await login(info);
+      await getme();
+      router.push(`/`);
+    } catch (error) {
+      console.log('error', error);
+    }
   };
 
   return (
@@ -32,6 +52,7 @@ export default function LoginForm() {
         <label htmlFor="email" className="flex items-baseline flex-col mb-4">
           <p className="font-semibold">Email (*)</p>
           <input
+            disabled={isSubmitting}
             type="email"
             className="mt-1 w-full"
             placeholder="Enter your email..."
@@ -46,6 +67,7 @@ export default function LoginForm() {
           <p className="font-semibold">Password (*)</p>
 
           <input
+            disabled={isSubmitting}
             type="password"
             className="mt-1 w-full"
             placeholder="Enter your password..."
@@ -56,10 +78,40 @@ export default function LoginForm() {
           </span>
         </label>
 
-        <div className="pt-5 flex justify-evenly">
-          <button type="submit" className="bg-red-400 hover:bg-red-300 w-full">
-            Login
-          </button>
+        <div className="pb-5 flex justify-evenly">
+          {isSubmitting ? (
+            <button
+              disabled
+              type="submit"
+              className="bg-red-400 w-full flex items-center justify-center"
+            >
+              <ThreeCircles
+                height="22"
+                width="22"
+                color="#4fa94d"
+                wrapperStyle={{}}
+                wrapperClass=""
+                visible
+                ariaLabel="three-circles-rotating"
+                outerCircleColor=""
+                innerCircleColor=""
+                middleCircleColor=""
+              />
+            </button>
+          ) : (
+            <button
+              type="submit"
+              className="bg-red-400 hover:bg-red-300 w-full"
+            >
+              Login
+            </button>
+          )}
+        </div>
+
+        <div className="w-full flex justify-center items-center">
+          <a href="/signup" className="underline">
+            Sign up
+          </a>
         </div>
       </form>
     </div>

@@ -125,7 +125,7 @@ export default function SignupForm() {
           </span>
         </label>
 
-        <div className="pt-5 flex justify-evenly">
+        <div className="pb-5 flex justify-evenly">
           {isSubmitting ? (
             <button
               disabled
@@ -153,6 +153,12 @@ export default function SignupForm() {
               Sign up
             </button>
           )}
+        </div>
+
+        <div className="w-full flex justify-center items-center">
+          <a href="/login" className="underline">
+            Log in
+          </a>
         </div>
       </form>
     </div>

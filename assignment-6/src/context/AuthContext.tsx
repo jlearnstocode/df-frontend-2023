@@ -1,31 +1,51 @@
 'use client';
 
 import { createContext, useContext, useMemo, useReducer } from 'react';
+import { toast } from 'react-toastify';
 import {
-  AuthInfoType,
   AuthInitialStateType,
+  GetmeResponse,
+  LoginRequest,
+  LoginResponse,
+  SignupRequest,
   SignupResponse,
+  UserType,
 } from '../@types/auth';
 import client from '../lib/api';
-import { toast } from 'react-toastify';
 
 const AuthContext = createContext<AuthInitialStateType | null>(null);
 
-const initialState = { userInfo: null, isLogin: false };
+const initialState = { userInfo: {}, isLogin: false };
 
 type ACTIONTYPE =
-  | { type: 'LOG_IN'; payload: AuthInfoType }
+  | {
+      type: 'GET_ME';
+      payload: {
+        avatar: string;
+        email: string;
+        fullName: string;
+        id: number;
+      };
+    }
   | { type: 'LOG_OUT' };
 
 function authReducer(state: typeof initialState, action: ACTIONTYPE) {
   switch (action.type) {
-    case 'LOG_IN': {
-      return state;
+    case 'GET_ME': {
+      state = {
+        ...state,
+        isLogin: true,
+        userInfo: { ...state.userInfo, ...action.payload },
+      };
       break;
     }
 
     case 'LOG_OUT': {
-      return state;
+      state = {
+        ...state,
+        isLogin: false,
+        userInfo: {},
+      };
       break;
     }
 
@@ -40,7 +60,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
   const value = useMemo(() => {
-    async function signup(info: AuthInfoType) {
+    async function signup(info: SignupRequest) {
       const { data }: SignupResponse = await client.signup(info);
       toast(data.message.toUpperCase(), {
         hideProgressBar: true,
@@ -49,11 +69,23 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       });
     }
 
-    function login(info: AuthInfoType) {
-      dispatch({ type: 'LOG_IN', payload: info });
+    async function login(info: LoginRequest) {
+      const { data }: LoginResponse = await client.login(info);
+      window.localStorage.setItem('my-token', data.accessToken);
+      toast('Susscess!', {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: 'success',
+      });
+    }
+
+    async function getme() {
+      const { data: userInfo }: GetmeResponse = await client.getMe();
+      dispatch({ type: 'GET_ME', payload: userInfo });
     }
 
     function logout() {
+      window.localStorage.removeItem('my-token');
       dispatch({ type: 'LOG_OUT' });
     }
 
@@ -62,6 +94,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       signup,
       login,
       logout,
+      getme,
     };
   }, [state]);
 
