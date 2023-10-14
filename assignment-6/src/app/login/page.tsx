@@ -4,9 +4,9 @@ import { z } from 'zod';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
+import { ThreeCircles } from 'react-loader-spinner';
 import { LoginRequest } from '../../@types/auth';
 import { useAuth } from '../../context/AuthContext';
-import { ThreeCircles } from 'react-loader-spinner';
 
 const LoginSchema = z.object({
   email: z.string().email('Email is not valid!'),
@@ -39,7 +39,7 @@ export default function LoginForm() {
     try {
       await login(info);
       await getme();
-      router.push(`/`);
+      router.replace(`/`);
     } catch (error) {
       console.log('error', error);
     }

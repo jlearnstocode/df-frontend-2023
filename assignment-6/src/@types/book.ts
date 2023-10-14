@@ -1,14 +1,47 @@
+export type TopicType = {
+  id: number;
+  code: string;
+  name: string;
+};
+
 export interface BookType {
   id: number;
   name: string;
   author: string;
-  topic: string;
+  topic: TopicType;
+}
+export interface NewBookType {
+  topicId: number;
+  name: string;
+  author: string;
+}
+export interface UpdateBookType {
+  id: number;
+  topicId: number;
+  name: string;
+  author: string;
+}
+export interface CreateBookReq {
+  data: NewBookType;
 }
 
+export type NewBookResponse = {
+  data: {
+    id: number;
+    name: string;
+    author: string;
+    topic: TopicType;
+  };
+};
+
+export type DeleteBookResponse = {
+  data: {
+    message: string;
+  };
+};
 export interface BookInitialStateType {
   state: { bookData: BookType[] };
-  searchBook: (text: string) => void;
   deleteBook: (id: number) => void;
-  addBook: (book: BookType) => void;
-  editBook: (book: BookType) => void;
+  addBook: (book: NewBookType) => void;
+  editBook: (book: UpdateBookType) => void;
 }

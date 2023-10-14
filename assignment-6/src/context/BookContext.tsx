@@ -1,44 +1,25 @@
 'use client';
 
 import { createContext, useContext, useMemo, useReducer } from 'react';
-import bookData from './bookData';
-import { BookInitialStateType, BookType } from '../@types/book';
+import { toast } from 'react-toastify';
+import {
+  BookInitialStateType,
+  BookType,
+  NewBookType,
+  UpdateBookType,
+} from '../@types/book';
+import client from '../lib/api';
 
 const BookContext = createContext({} as BookInitialStateType);
 
-const initialState: { bookData: BookType[] } = { bookData };
+const initialState: { bookData: BookType[] } = { bookData: [] };
 
 type ACTIONTYPE =
-  | { type: 'ADD_BOOK'; payload: BookType }
-  | { type: 'EDIT_BOOK'; payload: BookType }
   | { type: 'SEARCH_BOOK'; payload: string }
   | { type: 'DELETE_BOOK'; payload: number };
 
 function bookReducer(state: typeof initialState, action: ACTIONTYPE) {
   switch (action.type) {
-    case 'ADD_BOOK':
-      state = { ...state, bookData: [...state.bookData, action.payload] };
-      break;
-
-    case 'EDIT_BOOK': {
-      const { id } = action.payload;
-      const newData = state.bookData?.map((b) => {
-        if (b.id !== id) return b;
-
-        return action.payload;
-      });
-
-      state = { ...state, bookData: newData };
-      break;
-    }
-
-    case 'DELETE_BOOK': {
-      const id = action.payload;
-      const newData = state.bookData?.filter((b) => b.id !== id);
-      state = { ...state, bookData: newData };
-      break;
-    }
-
     case 'SEARCH_BOOK': {
       const text = action.payload?.toLowerCase();
       const result = state.bookData?.filter((b) =>
@@ -60,23 +41,34 @@ function bookReducer(state: typeof initialState, action: ACTIONTYPE) {
 }
 
 function BookProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(bookReducer, initialState);
+  const [state] = useReducer(bookReducer, initialState);
 
   const value = useMemo(() => {
-    function addBook(book: BookType) {
-      dispatch({ type: 'ADD_BOOK', payload: book });
+    async function addBook(book: NewBookType) {
+      await client.createBook(book);
+      toast(`Successful!`, {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: 'success',
+      });
     }
 
-    function editBook(book: BookType) {
-      dispatch({ type: 'EDIT_BOOK', payload: book });
+    async function editBook(book: UpdateBookType) {
+      await client.updateBook(book);
+      toast(`Successful!`, {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: 'success',
+      });
     }
 
-    function deleteBook(id: number) {
-      dispatch({ type: 'DELETE_BOOK', payload: id });
-    }
-
-    function searchBook(text: string) {
-      dispatch({ type: 'SEARCH_BOOK', payload: text });
+    async function deleteBook(id: number) {
+      await client.deleteBook({ id });
+      toast(`Successful!`, {
+        hideProgressBar: true,
+        autoClose: 2000,
+        type: 'success',
+      });
     }
 
     return {
@@ -84,7 +76,6 @@ function BookProvider({ children }: { children: React.ReactNode }) {
       addBook,
       editBook,
       deleteBook,
-      searchBook,
     };
   }, [state]);
 

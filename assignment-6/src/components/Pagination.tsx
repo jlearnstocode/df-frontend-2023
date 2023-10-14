@@ -2,8 +2,8 @@ import clsx from 'clsx';
 import React from 'react';
 
 interface PaginationProps {
-  totalPage: number;
-  currentPage: number;
+  totalPage: number | undefined;
+  currentPage: number | undefined;
   setCurrentPage: (p: number) => void;
 }
 

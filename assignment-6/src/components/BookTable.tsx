@@ -1,45 +1,60 @@
 import React, { useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useBookState } from '../context/BookContext';
+import { ThreeCircles } from 'react-loader-spinner';
 import Button from './Button';
 import { DeleteBookModal } from './DeleteBookModal';
 import Pagination from './Pagination';
 import { BookModal } from './BookModal';
+import { BookType } from '../@types/book';
+import { Metadata } from '../@types/auth';
 
-const ITEM_PER_PAGE = 5;
-
-function BookTable() {
-  const { bookData } = useBookState();
+function BookTable({
+  data,
+  metadata,
+  isLoading,
+  setCurrentPage,
+}: {
+  setCurrentPage: (p: number) => void;
+  isLoading: boolean;
+  data: BookType[];
+  metadata: Metadata;
+}) {
   const router = useRouter();
 
-  const [isShowModal, setIsShowModal] = useState(false);
+  const [isShowDeleteModal, setIsShowDeleteModal] = useState(false);
+  const [isShowBookModal, setIsShowBookModal] = useState(false);
+
   const [selectedBookId, setSetselectedBookId] = useState<number | null>(null);
 
   const selectedBook = useMemo(
-    () => bookData?.find((b) => b.id === selectedBookId),
-    [bookData, selectedBookId],
+    () => data?.find((b) => b.id === selectedBookId),
+    [data, selectedBookId],
   );
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const totalPage = Math.ceil((bookData?.length || 0) / ITEM_PER_PAGE);
-
-  const bookDataWithPage = useMemo(
-    () =>
-      bookData.slice(
-        (currentPage - 1) * ITEM_PER_PAGE,
-        currentPage * ITEM_PER_PAGE,
-      ),
-    [bookData, currentPage],
-  );
-
-  // Edit book
-  const [isShowBookModal, setIsShowBookModal] = useState(false);
-
+  if (isLoading) {
+    return (
+      <div className="h-56 w-full flex items-center justify-center">
+        Loading ...
+        <ThreeCircles
+          height="22"
+          width="22"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+        />
+      </div>
+    );
+  }
   return (
     <>
       <DeleteBookModal
-        isShowModal={isShowModal}
-        setIsShowModal={setIsShowModal}
+        isShowModal={isShowDeleteModal}
+        setIsShowModal={setIsShowDeleteModal}
         selectedBook={selectedBook}
       />
       <BookModal
@@ -48,9 +63,11 @@ function BookTable() {
         isShowBookModal={isShowBookModal}
         setIsShowBookModal={setIsShowBookModal}
       />
+
       <table className="w-full text-left">
         <thead>
           <tr>
+            <th className="bg-gray-300 p-2">ID</th>
             <th className="bg-gray-300 p-2">Name</th>
             <th className="bg-gray-300 p-2">Author</th>
             <th className="bg-gray-300 p-2">Topic</th>
@@ -59,20 +76,21 @@ function BookTable() {
         </thead>
 
         <tbody>
-          {bookDataWithPage?.length === 0 ? (
+          {data?.length === 0 ? (
             <tr>
               <td className="text-center py-4" colSpan={100}>
                 No book here! 🙈
               </td>
             </tr>
           ) : (
-            bookDataWithPage?.map((book, idx) => {
+            data?.map((book: BookType, idx: number) => {
               return (
                 <tr key={idx}>
+                  <td className="bg-white p-2">#{book?.id}</td>
                   <td className="bg-white p-2">{book?.name}</td>
                   <td className="bg-white p-2">{book?.author}</td>
-                  <td className="bg-white p-2">{book?.topic}</td>
-                  <td className="bg-white p-2">
+                  <td className="bg-white p-">{book?.topic?.name}</td>
+                  <td className="bg-white p-2 max-w-[150px]">
                     <Button
                       text="Edit"
                       variant="link-button"
@@ -87,7 +105,7 @@ function BookTable() {
                       variant="link-button"
                       onClick={() => {
                         setSetselectedBookId(book.id);
-                        setIsShowModal(true);
+                        setIsShowDeleteModal(true);
                       }}
                     />
                     |
@@ -108,8 +126,8 @@ function BookTable() {
       </table>
 
       <Pagination
-        totalPage={totalPage}
-        currentPage={currentPage}
+        totalPage={metadata?.totalPages}
+        currentPage={metadata?.page}
         setCurrentPage={setCurrentPage}
       />
     </>

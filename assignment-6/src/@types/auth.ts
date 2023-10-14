@@ -16,6 +16,7 @@ export interface AuthInitialStateType {
   state: { userInfo: UserType | null; isLogin: boolean };
   signup: (info: AuthInfoType) => void;
   login: (info: AuthInfoType) => void;
+  getme: () => void;
   logout: () => void;
 }
 

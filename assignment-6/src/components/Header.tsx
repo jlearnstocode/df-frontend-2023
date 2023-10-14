@@ -38,7 +38,7 @@ function Header() {
                   onClick={() => {
                     try {
                       logout();
-                      router.push(`/login`);
+                      router.replace(`/login`);
                     } catch (error) {
                       console.log('error', error);
                     }

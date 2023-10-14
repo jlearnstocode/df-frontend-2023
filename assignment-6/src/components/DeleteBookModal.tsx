@@ -1,8 +1,10 @@
 import React from 'react';
+import { mutate } from 'swr';
 import ModalWrapper from './ModalWrapper';
 import { useBook } from '../context/BookContext';
 import { ModalFooter } from './ModalFooter';
 import { BookType } from '../@types/book';
+import { delay } from '../lib/helper';
 
 interface DeleteBookModalProp {
   isShowModal: boolean;
@@ -19,6 +21,18 @@ export function DeleteBookModal({
 }: DeleteBookModalProp) {
   const { deleteBook } = useBook();
 
+  function handleDeleteBook() {
+    if (!selectedBook?.id) return;
+
+    deleteBook(selectedBook?.id);
+    setIsShowModal(false);
+
+    delay(100).then(() => {
+      mutate('get-books');
+      if (callbackFn) callbackFn();
+    });
+  }
+
   return (
     <ModalWrapper
       mode="DELETE_BOOK"
@@ -33,13 +47,7 @@ export function DeleteBookModal({
 
       <ModalFooter
         actionText="Delete"
-        handleSubmit={() => {
-          alert(JSON.stringify(selectedBook));
-          if (!selectedBook?.id) return;
-          deleteBook(selectedBook?.id);
-          setIsShowModal(false);
-          if (callbackFn) callbackFn();
-        }}
+        handleSubmit={() => handleDeleteBook()}
         setIsShowModal={setIsShowModal}
       />
     </ModalWrapper>

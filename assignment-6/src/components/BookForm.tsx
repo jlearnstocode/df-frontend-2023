@@ -1,10 +1,13 @@
 import { z } from 'zod';
+import useSWR, { mutate } from 'swr';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { useEffect, useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { BookType } from '../@types/book';
-import { useBook, useBookState } from '../context/BookContext';
+import { useBook } from '../context/BookContext';
 import { ModalFooter } from './ModalFooter';
+import client from '../lib/api';
+import { delay } from '../lib/helper';
 
 const BookSchema = z.object({
   name: z.string().min(5, 'Name must contain at least 5 character(s)'),
@@ -12,7 +15,7 @@ const BookSchema = z.object({
     .string()
     .min(5, 'Author must contain at least 5 character(s)')
     .regex(/^[A-Za-z ]+$/, 'Author must only contain letters and spaces'),
-  topic: z.string(),
+  topicId: z.string().min(1, 'Please choose a topic'),
 });
 
 type BookSchemaType = z.infer<typeof BookSchema>;
@@ -28,20 +31,25 @@ export function BookForm({
   selectedBook,
   setIsShowModal,
 }: BookFormProps) {
-  const { bookData } = useBookState();
+  const { data } = useSWR('get-topics', () => client.getTopics(), {
+    revalidateOnFocus: false,
+  });
 
-  const bookTopicList = useMemo(() => bookData.map((i) => i.topic), [bookData]);
-  const newId = useMemo(() => (bookData?.length || 0) + 1, [bookData]);
+  const bookTopicList = data?.data;
 
   const defaultValues = useMemo(() => {
     let value = {
       name: '',
       author: '',
-      topic: 'Code refactoring',
-    } as BookType;
+      topicId: '',
+    };
 
-    if (mode === 'EDIT_BOOK') {
-      value = { ...value, ...selectedBook };
+    if (selectedBook?.topic && mode === 'EDIT_BOOK') {
+      value = {
+        ...value,
+        ...selectedBook,
+        topicId: selectedBook?.topic?.id.toString(),
+      };
     }
 
     return value;
@@ -51,7 +59,7 @@ export function BookForm({
     reset,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<BookSchemaType>({
     defaultValues,
     resolver: zodResolver(BookSchema),
@@ -59,14 +67,28 @@ export function BookForm({
 
   const { editBook, addBook } = useBook();
 
-  const onSubmit: SubmitHandler<BookSchemaType> = (data) => {
-    if (mode === 'EDIT_BOOK') {
-      editBook({ ...data, id: selectedBook?.id || 0 });
-    }
+  const onSubmit: SubmitHandler<BookSchemaType> = (data: {
+    name: string;
+    author: string;
+    topicId: string;
+  }) => {
     if (mode === 'ADD_BOOK') {
-      addBook({ ...data, id: newId });
+      addBook({ ...data, topicId: Number(data.topicId) });
+    }
+
+    if (selectedBook && mode === 'EDIT_BOOK') {
+      editBook({
+        ...data,
+        id: selectedBook?.id,
+        topicId: Number(data.topicId),
+      });
     }
     setIsShowModal(false);
+    reset({ name: '', author: '', topicId: '' });
+
+    delay(100).then(() => {
+      mutate('get-books');
+    });
   };
 
   useEffect(() => {
@@ -79,6 +101,7 @@ export function BookForm({
         <label htmlFor="name" className="flex items-baseline flex-col mb-4">
           Name
           <input
+            disabled={isSubmitting}
             type="text"
             className="mt-1"
             placeholder="book name..."
@@ -94,6 +117,7 @@ export function BookForm({
         <label htmlFor="author" className="flex items-baseline flex-col mb-4">
           Author
           <input
+            disabled={isSubmitting}
             type="text"
             className="mt-1"
             placeholder="book author..."
@@ -106,22 +130,27 @@ export function BookForm({
       </div>
 
       <div>
-        <label htmlFor="topic" className="flex items-baseline flex-col mb-4">
+        <label htmlFor="topicId" className="flex items-baseline flex-col mb-4">
           Topic
-          <select className="mt-1 w-full" {...register('topic')}>
+          <select
+            disabled={isSubmitting}
+            className="mt-1 w-full"
+            {...register('topicId')}
+          >
             {bookTopicList?.map((item) => (
-              <option key={item} value={item}>
-                {item}
+              <option key={item.id} value={item.id}>
+                {item.name}
               </option>
             ))}
           </select>
           <span className="text-red-500 text-xs font-semibold h-3 mt-2">
-            {errors.topic && <span>{errors.topic.message}</span>}
+            {errors.topicId && <span>{errors.topicId.message}</span>}
           </span>
         </label>
       </div>
 
       <ModalFooter
+        disabled={Boolean(isSubmitting)}
         actionText={mode === 'EDIT_BOOK' ? 'Update' : 'Add'}
         buttonType="submit"
         setIsShowModal={setIsShowModal}

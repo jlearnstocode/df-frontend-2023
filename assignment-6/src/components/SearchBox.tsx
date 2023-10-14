@@ -1,22 +1,21 @@
-import React, { useState } from 'react';
-import { useBook } from '../context/BookContext';
+import React from 'react';
 
-function SearchBox() {
-  const { searchBook } = useBook();
-  const [text, setText] = useState('');
-
+function SearchBox({
+  text,
+  setText,
+}: {
+  text: string;
+  setText: (t: string) => void;
+}) {
   return (
     <input
       value={text}
-      onChange={({ target }) => {
-        setText(target.value);
-        searchBook(target.value);
-      }}
+      onChange={({ target }) => setText(target.value)}
       type="text"
       name="search-books-input"
       id="search-books-input"
       className="mr-2"
-      placeholder="Search books"
+      placeholder="Search book name or author"
     />
   );
 }

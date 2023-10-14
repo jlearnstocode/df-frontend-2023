@@ -1,11 +1,13 @@
 'use client';
 
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import useSWR from 'swr';
+import { ThreeCircles } from 'react-loader-spinner';
 import Button from '../../../components/Button';
-import { useBookState } from '../../../context/BookContext';
 import { DeleteBookModal } from '../../../components/DeleteBookModal';
 import NotFoundPage from './not-found';
+import client from '../../../lib/api';
 
 type ParamsBook = {
   id: number;
@@ -13,13 +15,33 @@ type ParamsBook = {
 
 function Book({ params }: { params: ParamsBook }) {
   const router = useRouter();
-  const { bookData } = useBookState();
   const [isShowModal, setIsShowModal] = useState(false);
 
-  const currBookInfo = useMemo(
-    () => bookData.find((b) => b.id.toString() === params.id.toString()),
-    [bookData, params.id],
+  const { data, isLoading } = useSWR('get-book-by-id', () =>
+    client.getBookById({ id: params.id }),
   );
+
+  const currBookInfo = data?.data;
+
+  if (isLoading) {
+    return (
+      <div className="h-56 w-full flex items-center justify-center">
+        Loading ...
+        <ThreeCircles
+          height="22"
+          width="22"
+          color="#4fa94d"
+          wrapperStyle={{}}
+          wrapperClass=""
+          visible
+          ariaLabel="three-circles-rotating"
+          outerCircleColor=""
+          innerCircleColor=""
+          middleCircleColor=""
+        />
+      </div>
+    );
+  }
 
   if (!currBookInfo) {
     return <NotFoundPage />;
@@ -46,7 +68,7 @@ function Book({ params }: { params: ParamsBook }) {
         </p>
         <p className="mb-4">
           <strong>Topic: </strong>
-          {currBookInfo?.topic}
+          {currBookInfo?.topic?.name}
         </p>
         <Button
           text="Delete"
